@@ -1,4 +1,4 @@
-// Testing (Acho)
+// Test2 (Acho)
 package main;
 
 import javax.swing.*;
