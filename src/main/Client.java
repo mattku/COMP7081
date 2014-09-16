@@ -1,5 +1,6 @@
 package main;
 
+import common.ChatMessage;
 import java.net.*;
 import java.io.*;
 import java.util.*;
