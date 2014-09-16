@@ -24,6 +24,8 @@ public final class Users
     private static final String tableName = "users";
     private static final String passwordCheck = "SELECT password FROM " + tableName + " WHERE user_id = ?";
     private static final String roleCheck = "SELECT role FROM " + tableName + "WHERE user_id = ?";
+    private static final String addUser = "INSERT INTO " + tableName + " VALUES(?,?,?)";
+    private static final String removeUser = "DELETE FROM " + tableName + " WHERE user_id = ?";
     
     public static PwdResult checkPassword(Connection conn, String username, String passHash) throws SQLException
     {
@@ -55,5 +57,25 @@ public final class Users
             }
             return rs.getString(1);
         }    
+    }
+    
+    public static void addUser(Connection conn, String username, String passHash, String role) throws SQLException
+    {
+        try (PreparedStatement stmt = conn.prepareStatement(addUser))
+        {
+            stmt.setString(1, username);
+            stmt.setString(2, passHash);
+            stmt.setString(3, role);
+            stmt.execute();
+        }    
+    }
+    
+    public static void removeUser(Connection conn, String username) throws SQLException
+    {
+        try (PreparedStatement stmt = conn.prepareStatement(removeUser))
+        {
+            stmt.setString(1, username);
+            stmt.execute();
+        }
     }
 }
