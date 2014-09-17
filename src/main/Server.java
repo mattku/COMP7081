@@ -3,8 +3,11 @@ package main;
 import common.ChatMessage;
 import java.io.*;
 import java.net.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import server.DB.*;
 
 /*
  * The server that can be run both as a console application or a GUI
@@ -144,7 +147,29 @@ public class Server {
 			}
 		}
 	}
-	
+	 //  handle login message and return the correct type of user,    
+         // or an anonymous user if the login info is not found
+         public String checkUser(String userID, String password) throws SQLException
+         {
+             DB.connect();
+             
+             String sql = "select password from Users where userName = ' userID '";
+                
+                 ResultSet rs = Users.executeQuery(sql);
+            if (rs.next()) 
+            { 
+                String pass = rs.getString("password"); 
+                if (pass.equalsIgnoreCase(password)) 
+                { 
+                    return userID;
+                }
+                else {
+                 return userID= "Anonymous";
+                }
+            }
+            return userID;
+         }
+                  
 	/*
 	 *  To run as a console application just open a console window and: 
 	 * > java Server
