@@ -5,7 +5,6 @@
 package common;
 
 import java.io.Serializable;
-import main.Util;
 
 /**
  * This object is to and from clients to servers.
@@ -15,17 +14,17 @@ import main.Util;
  * @author A00795612
  */
 public class LoginMessage implements Serializable {
-    
-    private String userId;
-    private String password;
+    private static final long serialVersionUID = 1112122202L;
+    private final String userId;
+    private final String passHash;
     /**
      * Constructor
      * userID: the username
      * password: Taken in plain text, formated into a hash string
      */
-    LoginMessage(String userID, String password) {
+    public LoginMessage(String userID, String password) {
         this.userId = userID;
-        this.password = Util.mySQLCompatibleMD5(password);
+        this.passHash = Util.mySQLCompatibleMD5(password);
     }
 
     //Getter and setter methods
@@ -33,16 +32,7 @@ public class LoginMessage implements Serializable {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getPassHash() {
+        return passHash;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
 }

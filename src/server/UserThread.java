@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,42 +18,24 @@ import common.*;
  */
 public class UserThread extends Thread {
 
-    // the socket where to listen/talk
-    Socket socket;
-    ObjectInputStream sInput;
-    ObjectOutputStream sOutput;
+    private ObjectInputStream sInput;
+    private ObjectOutputStream sOutput;
     // my unique id (easier for deconnection)
-    int id;
-    // the Username of the Client
-    String username;
-    // the only type of message a will receive
-    ChatMessage cm;
+    private int id;
     // the date I connect
-    String date;
+    private String date;
     //Server
-    Server server;
+    private Server server;
+    
+    private User user;
 
     // Constructore
-    UserThread(Socket socket, Server server) {
+    UserThread(User user, ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
 
-        this.socket = socket;
+        this.user = user;
         this.server = server;
-        /* Creating both Data Stream */
-        System.out.println("Thread trying to create Object Input/Output Streams");
-        try {
-            // create output first
-            sOutput = new ObjectOutputStream(socket.getOutputStream());
-            sInput = new ObjectInputStream(socket.getInputStream());
-            // read the username
-            username = (String) sInput.readObject();
-            server.display(username + " just connected.");
-        } catch (IOException e) {
-            server.display("Exception creating new Input/output Streams: " + e);
-            return;
-        } // have to catch ClassNotFoundException
-        // but I read a String, I am sure it will work
-        catch (ClassNotFoundException e) {
-        }
+        this.sOutput = sOutput;
+        this.sInput = sInput;
         date = new Date().toString() + "\n";
     }
 
@@ -62,11 +44,10 @@ public class UserThread extends Thread {
         // to loop until LOGOUT
         boolean keepGoing = true;
         while (keepGoing) {
-            // read a String (which is an object)
+            ChatMessage cm;
             try {
                 cm = (ChatMessage) sInput.readObject();
             } catch (IOException e) {
-                server.display(username + " Exception reading Streams: " + e);
                 break;
             } catch (ClassNotFoundException e2) {
                 break;
@@ -80,10 +61,10 @@ public class UserThread extends Thread {
                 // Switch on the type of message receive
                 switch (cm.getType()) {
                     case ChatMessage.MESSAGE:
-                        server.broadcast(username + ": " + message);
+                        server.broadcast(user.getUserID() + ": " + message);
                         break;
                     case ChatMessage.LOGOUT:
-                        server.display(username + " disconnected with a LOGOUT message.");
+                        server.display(user.getUserID() + " disconnected with a LOGOUT message.");
                         keepGoing = false;
                         break;
 //                case ChatMessage.WHOISIN:
@@ -100,12 +81,12 @@ public class UserThread extends Thread {
         }
         // remove myself from the arrayList containing the list of the
         // connected Clients
-        server.remove(id);
+        server.remove(user);
         close();
     }
 
     // try to close everything
-    private void close() {
+    public void close() {
         // try to close the connection
         try {
             if (sOutput != null) {
@@ -119,32 +100,26 @@ public class UserThread extends Thread {
             }
         } catch (Exception e) {
         };
-        try {
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (Exception e) {
-        }
     }
 
     /*
      * Write a String to the Client output stream
      */
     public boolean writeMsg(String msg) {
-        // if Client is still connected send the message to it
-        if (!socket.isConnected()) {
-            close();
-            return false;
-        }
         // write the message to the stream
         try {
             sOutput.writeObject(msg);
         } // if an error occurs, do not abort just inform the user
         catch (IOException e) {
-            server.display("Error sending message to " + username);
+            server.display("Error sending message to " + user.getUserID());
             server.display(e.toString());
         }
         return true;
+    }
+
+    public int getUId()
+    {
+        return id;
     }
 
 }

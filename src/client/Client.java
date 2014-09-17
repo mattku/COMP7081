@@ -1,6 +1,7 @@
-package main;
+package client;
 
 import common.ChatMessage;
+import common.LoginMessage;
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -79,7 +80,7 @@ public class Client  {
 		// will send as a String. All other messages will be ChatMessage objects
 		try
 		{
-			sOutput.writeObject(username);
+			sOutput.writeObject(new LoginMessage("admin", "password"));
 		}
 		catch (IOException eIO) {
 			display("Exception doing login : " + eIO);

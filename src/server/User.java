@@ -3,10 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package server;
 
 import java.io.IOException;
 import java.net.Socket;
+import common.Util;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  *
@@ -24,26 +27,21 @@ public class User {
      * Constructor userID - unique string identifying each user role - true if
      * user is administrator
      */
-    User(String userID, String role, String password, Socket socket, Server server) {
+    User(String userID, String password, String role, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
         this.userID = userID;
         this.role = role;
         this.password = Util.mySQLCompatibleMD5(password);
-        runUserThread(socket, server);
+        server.broadcast(userID + " has connected " + " as " + role);
+        runUserThread(sInput, sOutput, server);
     }
 
-    private void runUserThread(Socket socket, Server server) {
-        ut = new UserThread(socket, server);
+    private void runUserThread(ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
+        ut = new UserThread(this, sInput, sOutput, server);
         ut.start();
     }
 
     public void closeUserThread() {
-        try {
-            ut.sInput.close();
-            ut.sOutput.close();
-            ut.socket.close();
-        } catch (IOException ioE) {
-            // not much I can do
-        }
+            ut.close();
     }
 
     public UserThread getUt() {

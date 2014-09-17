@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package main;
+package common;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
