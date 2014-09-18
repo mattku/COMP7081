@@ -27,6 +27,8 @@ public class Login
     {
     }
 
+	//  handle login message and return the correct type of user,    
+	// or an anonymous user if the login info is not found
     public static User loginUser(Server server, Socket sock) throws IOException
     {
         ObjectOutputStream sOutput = new ObjectOutputStream(sock.getOutputStream());
@@ -51,4 +53,5 @@ public class Login
             return new User("Anonymous", "", "", sInput, sOutput, server);
         }
     }
+	
 }
