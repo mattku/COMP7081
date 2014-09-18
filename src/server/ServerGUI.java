@@ -1,5 +1,5 @@
 // Test3 (Acho)
-package main;
+package server;
 
 import javax.swing.*;
 import java.awt.*;

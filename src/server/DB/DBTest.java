@@ -8,7 +8,7 @@ package server.DB;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import main.Util;
+import common.Util;
 
 /**
  *

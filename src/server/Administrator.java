@@ -3,16 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package server;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import server.Server;
+import server.User;
 import java.net.Socket;
 import java.sql.SQLException;
 import server.DB.*;
 
 public class Administrator extends User {
 
-    public Administrator(String userID, String role, String password
-            , Socket socket, Server server) {
-        super(userID, role, password, socket, server);
+    public Administrator(String userID, String password, String role
+            , ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
+        super(userID, password, role, sInput, sOutput, server);
     }
     
     //Adds a user class somewhere
