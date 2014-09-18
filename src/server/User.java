@@ -27,10 +27,10 @@ public class User {
      * Constructor userID - unique string identifying each user role - true if
      * user is administrator
      */
-    User(String userID, String password, String role, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
+    User(String userID, String passHash, String role, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
         this.userID = userID;
         this.role = role;
-        this.password = Util.mySQLCompatibleMD5(password);
+        this.password = passHash;
         server.broadcast(userID + " has connected " + " as " + role);
         runUserThread(sInput, sOutput, server);
     }

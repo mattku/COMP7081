@@ -24,7 +24,7 @@ public final class Users
     }
     private static final String tableName = "users";
     private static final String passwordCheck = "SELECT password FROM " + tableName + " WHERE user_id = ?";
-    private static final String roleCheck = "SELECT role FROM " + tableName + "WHERE user_id = ?";
+    private static final String roleCheck = "SELECT role FROM " + tableName + " WHERE user_id = ?";
     private static final String addUser = "INSERT INTO " + tableName + " VALUES(?,?,?,?)";
     private static final String removeUser = "DELETE FROM " + tableName + " WHERE user_id = ?";
     
