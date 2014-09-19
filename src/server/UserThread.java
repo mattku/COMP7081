@@ -61,6 +61,8 @@ public class UserThread extends Thread {
                 // Switch on the type of message receive
                 switch (cm.getType()) {
                     case ChatMessage.MESSAGE:
+                        if (SlashCommand.process(user, message))
+                            break;
                         server.broadcast(user.getUserID() + ": " + message);
                         break;
                     case ChatMessage.LOGOUT:

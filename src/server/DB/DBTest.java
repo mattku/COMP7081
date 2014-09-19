@@ -35,12 +35,11 @@ public class DBTest
             assert(Users.getRole(conn, "admin").equals("admin"));
             assert(Users.getRole(conn, "notaname") == null);
             
-            
+            System.out.println("Test success!");
         }
         catch(SQLException sqlE)
         {
             DB.printSQLException(sqlE);
         }
-        System.out.println("Test success!");
     }
 }

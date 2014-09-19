@@ -55,9 +55,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 		northPanel.add(serverAndPort);
 
 		// the Label and the TextField
-		label = new JLabel("Enter your username below", SwingConstants.CENTER);
+		label = new JLabel("Enter your username and password below separated by a colon", SwingConstants.CENTER);
 		northPanel.add(label);
-		tf = new JTextField("Anonymous");
+		tf = new JTextField("Anonymous:Any");
 		tf.setBackground(Color.WHITE);
 		northPanel.add(tf);
 		add(northPanel, BorderLayout.NORTH);
@@ -103,8 +103,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		login.setEnabled(true);
 		logout.setEnabled(false);
 		whoIsIn.setEnabled(false);
-		label.setText("Enter your username below");
-		tf.setText("Anonymous");
+		label.setText("Enter your username and password below separated by a colon");
+		tf.setText("Anonymous:Any");
 		// reset port number and host name as a construction time
 		tfPort.setText("" + defaultPort);
 		tfServer.setText(defaultHost);
