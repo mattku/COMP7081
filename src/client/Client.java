@@ -80,7 +80,19 @@ public class Client  {
 		// will send as a String. All other messages will be ChatMessage objects
 		try
 		{
+<<<<<<< HEAD:src/client/Client.java
 			sOutput.writeObject(new LoginMessage("admin", "password"));
+=======
+            String[] astr = username.trim().split("\\s*:\\s*");
+
+            if (astr == null || astr.length == 0)
+                throw new IOException("Bad username or password");
+
+            if (astr.length >= 2)
+    			sOutput.writeObject(new LoginMessage(astr[0], astr[1]));
+            else
+    			sOutput.writeObject(new LoginMessage(astr[0], ""));
+>>>>>>> f55d938dd3c8e050332cd03765e653793c350960:src/client/Client.java
 		}
 		catch (IOException eIO) {
 			display("Exception doing login : " + eIO);
@@ -158,7 +170,7 @@ public class Client  {
 		// default values
 		int portNumber = 1500;
 		String serverAddress = "localhost";
-		String userName = "Anonymous";
+		String userName = "Anonymous:Any";
 
 		// depending of the number of arguments provided we fall through
 		switch(args.length) {
