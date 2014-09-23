@@ -1,19 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package common;
 
 import java.io.Serializable;
 
 /**
- *
+ * Handles messages between the User and the Server.
+ * Extends the ChatMessage class and provides
+ * members for data specific to Users.
+ * 
  * @author Brian
+ * @author Matthew Ku
  */
 public class AddUserMessage extends ChatMessage implements Serializable
 {
+    //User members to be stored within object and passed to server
     private static final long serialVersionUID = 1112122201L;
     private final String userId;
     private final String passHash;
@@ -29,6 +28,7 @@ public class AddUserMessage extends ChatMessage implements Serializable
         this.team = team;
     }
 
+    //Getter and Setter methods
     public String getUserId()
     {
         return userId;

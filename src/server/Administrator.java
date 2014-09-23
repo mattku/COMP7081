@@ -1,17 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package server;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import server.Server;
-import server.User;
-import java.net.Socket;
 import java.sql.SQLException;
 import server.DB.*;
 
+/**
+ * Extends the User class to provide
+ * administrative powers to a User.
+ * 
+ * @author Matt
+ */
 public class Administrator extends User {
 
     public Administrator(String userID, String password, String role, String team

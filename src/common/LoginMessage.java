@@ -1,17 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package common;
 
 import java.io.Serializable;
 
 /**
- * This object is to and from clients to servers.
+ * This object is sent to and from clients to servers.
  * When clients send the data to the server, the username and password
  * are stored in this object.  The password is passed along into this
  * object and hashed during the initialization.
- * @author A00795612
+ * @author Matthew Ku
  */
 public class LoginMessage implements Serializable {
     private static final long serialVersionUID = 1112122202L;

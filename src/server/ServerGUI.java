@@ -1,9 +1,8 @@
-// Test3 (Acho)
 package server;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /*
  * The server as a GUI

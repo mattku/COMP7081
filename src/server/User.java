@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package server;
 
-import java.io.IOException;
-import java.net.Socket;
-import common.Util;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- *
- * @author a00795612
+ * The User object holds all relevant
+ * data and threads for a single user.
+ * 
+ * @author Matthew Ku
  */
 public class User {
 

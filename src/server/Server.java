@@ -1,11 +1,9 @@
 package server;
 
-import common.ChatMessage;
 import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import server.Login;
 
 /*
  * The server that can be run both as a console application or a GUI

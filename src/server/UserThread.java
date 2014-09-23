@@ -1,22 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package server;
 
+import common.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.Date;
-import common.*;
 import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- *
- * @author a00795612
+ * UserThread creates a thread to handle ChatMessage
+ * and AddUser objects between the Server and User.
+ * Currently all messages displayed to the user
+ * is done through this class.
+ * 
+ * @author Matthew Ku
  */
 public class UserThread extends Thread {
 
@@ -31,7 +29,7 @@ public class UserThread extends Thread {
     
     private User user;
 
-    // Constructore
+    // Constructor
     UserThread(User user, ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
 
         this.user = user;
@@ -42,6 +40,7 @@ public class UserThread extends Thread {
     }
 
     // what will run forever
+    @Override
     public void run() {
         // to loop until LOGOUT
         boolean keepGoing = true;
@@ -66,8 +65,9 @@ public class UserThread extends Thread {
                 // Switch on the type of message receive
                 switch (cm.getType()) {
                     case ChatMessage.MESSAGE:
-                        if (SlashCommand.process(user, message))
-                            break;
+                        if (SlashCommand.process(user, message)) {
+                    break;
+                }
                         server.teamBroadcast(user.getTeam(), user.getUserID() + " (" + user.getTeam() + "): " + message);
                         break;
                     case ChatMessage.LOGOUT:
@@ -99,6 +99,7 @@ public class UserThread extends Thread {
     }
 
     // try to close everything
+    @SuppressWarnings("empty-statement")
     public void close() {
         // try to close the connection
         try {
