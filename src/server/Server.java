@@ -22,6 +22,8 @@ public class Server {
     private int port;
     // the boolean that will be turned of to stop the server
     private boolean keepGoing;
+    //Hashmap contains the Team objects currently being used
+    private HashMap<String, Team> teamList;
 
 
     /*
@@ -130,7 +132,7 @@ public class Server {
     }
 
     // Broadcast a message to all clients in the same team
-    public synchronized void teamBroadcast(String team, String message) {
+    public synchronized void teamBroadcast(Team team, String message) {
         String time = sdf.format(new Date());
         String messageLf = time + " " + message + "\n";
 
@@ -140,16 +142,16 @@ public class Server {
             sg.appendRoom(messageLf);
         }
 
-        for (Iterator<User> iter = userSet.iterator(); iter.hasNext();) {
-            User u = iter.next();
+        if (!this.teamList.containsValue(team)) {
+            this.teamList.put(team.getTeamName(), team);
+        }
 
-            if (!u.getTeam().equals(team)) {
-                continue;
-            }
-
+        for (User u : teamList.get(
+                team.getTeamName()).getTeamMembers()) {
             if (!u.getUt().writeMsg(messageLf)) {
-                iter.remove();
-                display("Disconnected Client " + u.getUserID() + " removed from list.");
+                display("Disconnected Client "
+                        + u.getUserID()
+                        + " removed from list.");
             }
         }
     }
@@ -191,5 +193,9 @@ public class Server {
 
     public HashSet<User> getUserSet() {
         return userSet;
+    }
+
+    public HashMap<String, Team> getTeamList() {
+        return teamList;
     }
 }

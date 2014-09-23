@@ -44,5 +44,8 @@ public class Team {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
-    
+
+    public ArrayList<User> getTeamMembers() {
+        return teamMembers;
+    }
 }

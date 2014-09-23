@@ -4,9 +4,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * The User object holds all relevant
- * data and threads for a single user.
- * 
+ * The User object holds all relevant data and threads for a single user.
+ *
  * @author Matthew Ku
  */
 public class User {
@@ -15,29 +14,33 @@ public class User {
     private String userID;
     private String password;
     private Role role;
-    private String team;
+    private Team team;
     private UserThread ut;
 
     /**
      * Constructor userID - unique string identifying each user role - true if
      * user is administrator
      */
-    User(String userID, String passHash, String role, String team, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
+    User(String userID, String passHash, String role, String team, ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
         this.userID = userID;
         this.password = passHash;
         this.role = RoleFactory.createRole(role, this);
-        this.team = team;
-        server.teamBroadcast(team, userID + " has connected " + " as " + role);
+        if (server.getTeamList().containsKey(team)) {
+            this.team = server.getTeamList().get(team);
+        } else {
+            this.team = new Team(team);
+        }
+        server.teamBroadcast(this.team, userID + " has connected " + " as " + role);
         runUserThread(sInput, sOutput, server);
     }
 
-    private void runUserThread(ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
+    private void runUserThread(ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
         ut = new UserThread(this, sInput, sOutput, server);
         ut.start();
     }
 
     public void closeUserThread() {
-            ut.close();
+        ut.close();
     }
 
     public UserThread getUt() {
@@ -52,7 +55,7 @@ public class User {
         return role;
     }
 
-    public String getTeam() {
+    public Team getTeam() {
         return team;
     }
 
@@ -67,5 +70,4 @@ public class User {
     private void changeRole(Role newRole) {
         this.role = newRole;
     }
-
 }

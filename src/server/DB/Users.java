@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import server.Team;
 
 /**
  * Handles queries relevant to a user
@@ -43,6 +44,7 @@ public final class Users
         return PwdResult.INCORRECT_PASSWORD;
     }
     
+    //This won't really work because team is now an object, not a String
     public static String getTeam(Connection conn, String username) throws SQLException
     {
         try (PreparedStatement stmt = conn.prepareStatement(getTeam))
