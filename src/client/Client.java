@@ -2,8 +2,8 @@ package client;
 
 import common.ChatMessage;
 import common.LoginMessage;
-import java.net.*;
 import java.io.*;
+import java.net.*;
 import java.util.*;
 
 /*
