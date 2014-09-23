@@ -22,6 +22,20 @@ public class Team {
         return teamMembers.add(user);
     }
     
+    public boolean containsMember(User user) {
+        return teamMembers.contains(user);
+    }
+    
+    //Returns a string array of the userIDs of each team member
+    public String[] getTeamList() {
+        String[] teamList = new String[teamMembers.size()];
+        int c = 0;
+        for(User u : teamMembers) {
+            teamList[c++] = u.getUserID();
+        }
+        return teamList;
+    }
+    
     //Getters and Setters
     public String getTeamName() {
         return teamName;
