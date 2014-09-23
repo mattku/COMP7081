@@ -55,7 +55,7 @@ public final class SlashCommand
         as = s.trim().split("\\s+");
         s = as[0].toLowerCase();
 
-        sRole = pUser.getRole();
+        sRole = pUser.getRole().toString();
         bIsAdmin = sRole.equals(ROLE_ADMIN);
 
         if (bIsAdmin || sRole.equals(ROLE_MASTER))

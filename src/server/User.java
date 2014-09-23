@@ -14,7 +14,7 @@ public class User {
     //Basic properties of a user
     private String userID;
     private String password;
-    private String role;
+    private Role role;
     private String team;
     private UserThread ut;
 
@@ -25,7 +25,7 @@ public class User {
     User(String userID, String passHash, String role, String team, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
         this.userID = userID;
         this.password = passHash;
-        this.role = role;
+        this.role = RoleFactory.createRole(role, this);
         this.team = team;
         server.teamBroadcast(team, userID + " has connected " + " as " + role);
         runUserThread(sInput, sOutput, server);
@@ -48,7 +48,7 @@ public class User {
         return userID;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -64,7 +64,7 @@ public class User {
         this.userID = newID;
     }
 
-    private void changeAdminStatus(String newRole) {
+    private void changeRole(Role newRole) {
         this.role = newRole;
     }
 

@@ -21,27 +21,15 @@ public class AddUserHandler
     public static void handle(User user, String name, String password, String role, String team, String company) throws Exception
     {
         Connection conn;
-        switch(user.getRole())
+        if(user.getRole().canAddUser(team))
         {
-            case SlashCommand.ROLE_ADMIN:
-                conn = DB.connect();
-                innerHandle(conn, name, password, role, team, company);
-                conn.close();
-                break;
-            case SlashCommand.ROLE_MASTER:
-                conn = DB.connect();
-                if(team.equals(user.getTeam()))
-                {
-                    innerHandle(conn, name, password, role, team, company);
-                }
-                else
-                {
-                    throw new Exception();
-                }
-                conn.close();
-                break;
-            default:
-                throw new Exception();
+            conn = DB.connect();
+            innerHandle(conn, name, password, role, team, company);
+            conn.close();
+        }
+        else
+        {
+            throw new Exception();
         }
     }
     private static void innerHandle(Connection conn, String name, String password, String role, String team, String company) throws SQLException
