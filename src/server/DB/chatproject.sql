@@ -26,8 +26,9 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `users`
 --
+DROP TABLE `users`;
 
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `user_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
