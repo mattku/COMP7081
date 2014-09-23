@@ -37,20 +37,24 @@ public class Login
         {
             LoginMessage msg = (LoginMessage) sInput.readObject();
             Connection conn = DB.connect();
-            switch (Users.checkPassword(conn, msg.getUserId(), msg.getPassHash()))
+            switch (Users.getPassword(conn, msg.getUserId(), msg.getPassHash()))
             {
                 case SUCCESS:
-                    return new User(msg.getUserId(), msg.getPassHash(), Users.getRole(conn, msg.getUserId()), sInput, sOutput, server);
+                    return new User(msg.getUserId(),
+                                    msg.getPassHash(),
+                                    Users.getRole(conn, msg.getUserId()),
+                                    Users.getTeam(conn, msg.getUserId()),
+                                    sInput, sOutput, server);
                 default:
-                    return new User("Anonymous", "", "", sInput, sOutput, server);
+                    return new User("Anonymous", "", "", "", sInput, sOutput, server);
             }
         } catch (ClassNotFoundException ex)
         {
-            return new User("Anonymous", "", "", sInput, sOutput, server);
+            return new User("Anonymous", "", "", "", sInput, sOutput, server);
         } catch (SQLException ex)
         {
             DB.printSQLException(ex);
-            return new User("Anonymous", "", "", sInput, sOutput, server);
+            return new User("Anonymous", "", "", "", sInput, sOutput, server);
         }
     }
 }

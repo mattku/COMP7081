@@ -19,19 +19,21 @@ public class User {
 
     //Basic properties of a user
     private String userID;
-    private String role;
     private String password;
+    private String role;
+    private String team;
     private UserThread ut;
 
     /**
      * Constructor userID - unique string identifying each user role - true if
      * user is administrator
      */
-    User(String userID, String passHash, String role, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
+    User(String userID, String passHash, String role, String team, ObjectInputStream sInput,ObjectOutputStream sOutput, Server server) {
         this.userID = userID;
-        this.role = role;
         this.password = passHash;
-        server.broadcast(userID + " has connected " + " as " + role);
+        this.role = role;
+        this.team = team;
+        server.teamBroadcast(team, userID + " has connected " + " as " + role);
         runUserThread(sInput, sOutput, server);
     }
 
@@ -54,6 +56,10 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public String getTeam() {
+        return team;
     }
 
     public String getPassword() {

@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Date;
 import common.*;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *
@@ -43,6 +45,9 @@ public class UserThread extends Thread {
     public void run() {
         // to loop until LOGOUT
         boolean keepGoing = true;
+
+        writeMsg("You are connected as " + user.getUserID() + '\n');
+
         while (keepGoing) {
             ChatMessage cm;
             try {
@@ -63,20 +68,26 @@ public class UserThread extends Thread {
                     case ChatMessage.MESSAGE:
                         if (SlashCommand.process(user, message))
                             break;
-                        server.broadcast(user.getUserID() + ": " + message);
+                        server.teamBroadcast(user.getTeam(), user.getUserID() + " (" + user.getTeam() + "): " + message);
                         break;
                     case ChatMessage.LOGOUT:
                         server.display(user.getUserID() + " disconnected with a LOGOUT message.");
                         keepGoing = false;
                         break;
-//                case ChatMessage.WHOISIN:
-//                    server.writeMsg("List of the users connected at " + sdf.format(new Date()) + "\n");
-                    // scan al the users connected
-//                    for (int i = 0; i < al.size(); ++i) {
-//                        Server.ClientThread ct = al.get(i);
-//                        writeMsg((i + 1) + ") " + ct.username + " since " + ct.date);
-//                    }
-//                    break;
+
+                    case ChatMessage.WHOISIN:
+                        writeMsg("List of the users connected at " + date);
+
+                        // scan all the users connected
+                        HashSet<User>userSet = server.getUserSet();
+                        int i = 1;
+                        
+                        for(Iterator<User> iter = userSet.iterator(); iter.hasNext();)
+                        {
+                            User u = iter.next();
+                            writeMsg((i++) + " " + u.getUserID() + " (" + u.getTeam() + ")\n");
+                        }
+                        break;
                 }
             }
 

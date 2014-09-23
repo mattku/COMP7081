@@ -62,16 +62,17 @@ public class Server {
 				// if I was asked to stop
 				if(!keepGoing)
 					break;
-                                User toLogin = Login.loginUser(this, socket);
+
+                User toLogin = Login.loginUser(this, socket);
 				userSet.add(toLogin);// save it in the ArrayList
 			}
 			// I was asked to stop
 			try {
 				serverSocket.close();
 				for(User u : userSet)
-                                {
-                                    u.closeUserThread();
-                                }
+                {
+                    u.closeUserThread();
+                }
 			}
 			catch(Exception e) {
 				display("Exception closing the server and clients: " + e);
@@ -107,10 +108,12 @@ public class Server {
 		else
 			sg.appendEvent(time + "\n");
 	}
-	/*
+
+    /*
 	 *  to broadcast a message to all Clients
 	 */
-	public synchronized void broadcast(String message) {
+	public synchronized void broadcast(String message)
+    {
 		// add HH:mm:ss and \n to the message
 		String time = sdf.format(new Date());
 		String messageLf = time + " " + message + "\n";
@@ -120,19 +123,45 @@ public class Server {
 		else
 			sg.appendRoom(messageLf);     // append in the room window
 		
-		// we loop in reverse order in case we would have to remove a Client
-		// because it has disconnected
 		for(Iterator<User> iter = userSet.iterator(); iter.hasNext();)
-                {
-                    User user = iter.next();
-			if(!user.getUt().writeMsg(messageLf)) {
-                            iter.remove();
-				display("Disconnected Client " + user.getUserID() + " removed from list.");
+        {
+            User u = iter.next();
+            
+			if (!u.getUt().writeMsg(messageLf))
+            {
+                iter.remove();
+				display("Disconnected Client " + u.getUserID() + " removed from list.");
 			}
 		}
 	}
 
-	// for a client who logoff using the LOGOUT message
+	// Broadcast a message to all clients in the same team
+	public synchronized void teamBroadcast(String team, String message)
+    {
+		String time = sdf.format(new Date());
+		String messageLf = time + " " + message + "\n";
+
+        if(sg == null)
+			System.out.print(messageLf);
+		else
+			sg.appendRoom(messageLf);
+		
+		for(Iterator<User> iter = userSet.iterator(); iter.hasNext();)
+        {
+            User u = iter.next();
+
+            if (!u.getTeam().equals(team))
+                continue;
+            
+			if (!u.getUt().writeMsg(messageLf))
+            {
+                iter.remove();
+				display("Disconnected Client " + u.getUserID() + " removed from list.");
+			}
+		}
+	}
+
+    // for a client who logoff using the LOGOUT message
 	synchronized void remove(User u) {
 	    userSet.remove(u);
 	}
@@ -167,6 +196,10 @@ public class Server {
 		Server server = new Server(portNumber);
 		server.start();
 	}
+    
+	public HashSet<User> getUserSet()
+    {
+        return userSet;
+    }
 
 }
-
