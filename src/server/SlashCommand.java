@@ -129,7 +129,7 @@ public final class SlashCommand
                     break;
             }
 
-            pUser.getUt().writeMsg(s);
+            pUser.sendMessage(s);
 
             return true;
         }

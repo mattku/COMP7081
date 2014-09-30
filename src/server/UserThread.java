@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * UserThread creates a thread to handle ChatMessage
@@ -68,7 +69,7 @@ public class UserThread extends Thread {
                         if (SlashCommand.process(user, message)) {
                     break;
                 }
-                        server.teamBroadcast(user.getTeam(), user.getUserID() + " (" + user.getTeam() + "): " + message);
+                        server.broadcast(user.getUserID() + " (" + user.getTeam() + "): " + message);
                         break;
                     case ChatMessage.LOGOUT:
                         server.display(user.getUserID() + " disconnected with a LOGOUT message.");
@@ -77,14 +78,12 @@ public class UserThread extends Thread {
 
                     case ChatMessage.WHOISIN:
                         writeMsg("List of the users connected at " + date);
-
                         // scan all the users connected
-                        HashSet<User>userSet = server.getUserSet();
+                        Set<User> userSet = server.getAllUsers();
                         int i = 1;
                         
-                        for(Iterator<User> iter = userSet.iterator(); iter.hasNext();)
+                        for(User u : userSet)
                         {
-                            User u = iter.next();
                             writeMsg((i++) + " " + u.getUserID() + " (" + u.getTeam() + ")\n");
                         }
                         break;
@@ -94,13 +93,13 @@ public class UserThread extends Thread {
         }
         // remove myself from the arrayList containing the list of the
         // connected Clients
-        server.remove(user);
+        server.removeUser(user);
         close();
     }
 
     // try to close everything
     @SuppressWarnings("empty-statement")
-    public void close() {
+    public synchronized void close() {
         // try to close the connection
         try {
             if (sOutput != null) {
@@ -119,7 +118,7 @@ public class UserThread extends Thread {
     /*
      * Write a String to the Client output stream
      */
-    public boolean writeMsg(String msg) {
+    public synchronized boolean writeMsg(String msg) {
         // write the message to the stream
         try {
             sOutput.writeObject(msg);
@@ -134,6 +133,11 @@ public class UserThread extends Thread {
     public int getUId()
     {
         return id;
+    }
+    
+    public Server getServer()
+    {
+        return server;
     }
 
 }

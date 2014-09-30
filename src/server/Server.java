@@ -13,7 +13,7 @@ public class Server {
 
     private static int uniqueId;
     // an ArrayList to keep the list of the Client
-    private HashSet<User> userSet;
+    private HashMap<String, User> userMap;
     // if I am in a GUI
     private ServerGUI sg;
     // to display time
@@ -23,7 +23,7 @@ public class Server {
     // the boolean that will be turned of to stop the server
     private boolean keepGoing;
     //Hashmap contains the Team objects currently being used
-    private HashMap<String, Team> teamList;
+    private HashMap<String, Team> teamMap;
 
 
     /*
@@ -42,9 +42,9 @@ public class Server {
         // to display hh:mm:ss
         sdf = new SimpleDateFormat("HH:mm:ss");
         // ArrayList for the Client list
-        userSet = new HashSet<>();
+        userMap = new HashMap<>();
         //Hashmap for list of teams
-        teamList = new HashMap<>();
+        teamMap = new HashMap<>();
     }
 
     public void start() {
@@ -64,14 +64,36 @@ public class Server {
                 if (!keepGoing) {
                     break;
                 }
-
-                User toLogin = Login.loginUser(this, socket);
-                userSet.add(toLogin);// save it in the ArrayList
+                synchronized(this)
+                {
+                    User toLogin = Login.loginUser(this, socket);
+                    if(!userMap.containsKey(toLogin.getUserID()))
+                    {
+                        userMap.put(toLogin.getUserID(), toLogin);// save it in the map
+                        broadcast(toLogin.getUserID() + " has connected " + " as " + toLogin.getRole());
+                        if(teamMap.containsKey(toLogin.getTeam()))
+                        {
+                            teamMap.get(toLogin.getTeam()).addUser(toLogin);
+                        }
+                        else
+                        {
+                            Team newTeam = new Team(toLogin.getTeam());
+                            teamMap.put(newTeam.getTeamName(), newTeam);
+                            newTeam.addUser(toLogin);
+                        }
+                    }
+                    else
+                    {
+                        toLogin.sendMessage("Already logged in.\n");
+                        toLogin.closeUserThread();
+                    }
+                    
+                }
             }
             // I was asked to stop
             try {
                 serverSocket.close();
-                for (User u : userSet) {
+                for (User u : userMap.values()) {
                     u.closeUserThread();
                 }
             } catch (Exception e) {
@@ -123,12 +145,12 @@ public class Server {
         } else {
             sg.appendRoom(messageLf);     // append in the room window
         }
-        for (Iterator<User> iter = userSet.iterator(); iter.hasNext();) {
-            User u = iter.next();
+        for (Iterator<Map.Entry<String, User>> iter = userMap.entrySet().iterator(); iter.hasNext();) {
+            Map.Entry<String, User> ent = iter.next();
 
-            if (!u.getUt().writeMsg(messageLf)) {
+            if (!ent.getValue().sendMessage(messageLf)) {
                 iter.remove();
-                display("Disconnected Client " + u.getUserID() + " removed from list.");
+                display("Disconnected Client " + ent.getValue().getUserID() + " removed from list.");
             }
         }
     }
@@ -148,9 +170,9 @@ public class Server {
 //            this.teamList.put(team.getTeamName(), team);
 //        }
 
-        for (User u : teamList.get(
+        for (User u : teamMap.get(
                 team).getTeamMembers()) {
-            if (!u.getUt().writeMsg(messageLf)) {
+            if (!u.sendMessage(messageLf)) {
                 display("Disconnected Client "
                         + u.getUserID()
                         + " removed from list.");
@@ -159,8 +181,16 @@ public class Server {
     }
 
     // for a client who logoff using the LOGOUT message
-    synchronized void remove(User u) {
-        userSet.remove(u);
+    public synchronized void removeUser(User u) {
+        if(userMap.containsValue(u))
+        {
+            userMap.remove(u.getUserID());
+            Team t = teamMap.get(u.getTeam());
+            if(t != null)
+            {
+                t.removeUser(u);
+            }
+        }
     }
 
     /*
@@ -193,15 +223,22 @@ public class Server {
         server.start();
     }
 
-    public HashSet<User> getUserSet() {
-        return userSet;
-    }
-
-    public HashMap<String, Team> getTeamList() {
-        return teamList;
+    public synchronized User getUser(String name)
+    {
+        return userMap.get(name);
     }
     
-    public void addTeam(String teamName, Team newTeam) {
-        this.teamList.put(teamName, newTeam);
+    public synchronized void addTeam(String teamName, Team newTeam) {
+        teamMap.put(teamName, newTeam);
+    }
+    
+    public synchronized Team getTeam(String teamName)
+    {
+        return teamMap.get(teamName);
+    }
+    
+    public synchronized Set<User> getAllUsers()
+    {
+        return new HashSet<>(userMap.values());
     }
 }

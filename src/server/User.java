@@ -29,13 +29,8 @@ public class User {
         this.password = passHash;
         this.role = RoleFactory.createRole(role, this);
         this.team = teamName;
-        if (!server.getTeamList().containsKey(teamName)) {
-            server.addTeam(teamName, new Team(teamName));
-        }
-        server.getTeamList().get(teamName).addUser(this);
         
         runUserThread(sInput, sOutput, server);
-        server.teamBroadcast(this.team, this.userID + " has connected " + " as " + role);
     }
 
     private void runUserThread(ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
@@ -47,16 +42,17 @@ public class User {
         ut.close();
     }
 
-    public UserThread getUt() {
-        return ut;
-    }
-
     public String getUserID() {
         return userID;
     }
 
     public Role getRole() {
         return role;
+    }
+    
+    public void setRole(Role r)
+    {
+        role = r;
     }
 
     public String getTeam() {
@@ -73,5 +69,15 @@ public class User {
 
     private void changeRole(Role newRole) {
         this.role = newRole;
+    }
+    
+    public boolean sendMessage(String message)
+    {
+        return ut.writeMsg(message);
+    }
+    
+    public Server getServer()
+    {
+        return ut.getServer();
     }
 }

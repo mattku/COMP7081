@@ -27,6 +27,11 @@ public class Team {
         return teamMembers.contains(user);
     }
     
+    public boolean removeUser(User user)
+    {
+        return teamMembers.remove(user);
+    }
+    
     //Returns a string array of the userIDs of each team member
     public String[] getTeamList() {
         String[] teamList = new String[teamMembers.size()];

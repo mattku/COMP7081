@@ -9,6 +9,7 @@ package server;
 import java.sql.Connection;
 import server.DB.DB;
 import server.DB.Users;
+import server.Roles.RoleFactory;
 
 /**
  *
@@ -23,6 +24,11 @@ public class SetRoleHandler
         {
             Users.setRole(conn, name, newRole);
             conn.close();
+            User onlineUser = user.getServer().getUser(name);
+            if(onlineUser != null)
+            {
+                onlineUser.setRole(RoleFactory.createRole(newRole, onlineUser));
+            }
         }
         else
         {
