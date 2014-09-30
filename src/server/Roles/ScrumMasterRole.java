@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package server;
+package server.Roles;
+
+import server.User;
 
 /**
  *
@@ -38,6 +40,18 @@ public class ScrumMasterRole implements Role
     }
     
     @Override
+    public boolean canTeamChat(String team)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canAllChat()
+    {
+        return false;
+    }
+    
+    @Override
     public String toString()
     {
         return SCRUM_MASTER;
@@ -48,6 +62,8 @@ public class ScrumMasterRole implements Role
     {
         switch(o)
         {
+            case ANONYMOUS:
+                return 1;
             case USER:
                 return 1;
             case DEVELOPER:
@@ -60,4 +76,6 @@ public class ScrumMasterRole implements Role
                 return -1;
         }
     }
+
+    
 }

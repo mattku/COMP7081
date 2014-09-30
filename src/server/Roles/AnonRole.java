@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package server;
+package server.Roles;
 
 /**
  *
  * @author Brian
  */
-public class DevRole implements Role
+public class AnonRole implements Role
 {
 
     @Override
@@ -30,28 +30,23 @@ public class DevRole implements Role
     {
         return false;
     }
-    
+
     @Override
-    public String toString()
+    public boolean canTeamChat(String team)
     {
-        return DEVELOPER;
+        return false;
     }
 
     @Override
+    public boolean canAllChat()
+    {
+        return true;
+    }
+    
+    @Override
     public int compareTo(String o)
     {
-        switch(o)
-        {
-            case USER:
-                return 1;
-            case DEVELOPER:
-                return 0;
-            case SCRUM_MASTER:
-                return -1;
-            case ADMINISTRATOR:
-                return -1;
-            default:
-                return -1;
-        }
+        return -1;
     }
+    
 }
