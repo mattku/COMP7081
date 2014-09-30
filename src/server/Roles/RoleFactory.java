@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package server;
+package server.Roles;
+
+import server.User;
 
 /**
  *
@@ -25,7 +27,7 @@ public class RoleFactory
             case Role.SCRUM_MASTER:
                 return new ScrumMasterRole(user);
             default:
-                return null;
+                return new AnonRole();
         }
     }
 }

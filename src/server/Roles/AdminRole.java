@@ -4,36 +4,49 @@
  * and open the template in the editor.
  */
 
-package server;
+package server.Roles;
 
 /**
  *
  * @author Brian
  */
-public class UserRole implements Role
+public class AdminRole implements Role
 {
+
     @Override
     public boolean canAddUser(String team)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canRemoveUser(String team)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canChangeRole(String team, String newRole)
     {
-        return false;
+        return compareTo(newRole) >= 0;
+    }
+    
+    @Override
+    public boolean canTeamChat(String team)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean canAllChat()
+    {
+        return true;
     }
     
     @Override
     public String toString()
     {
-        return USER;
+        return ADMINISTRATOR;
     }
 
     @Override
@@ -41,14 +54,16 @@ public class UserRole implements Role
     {
         switch(o)
         {
+            case ANONYMOUS:
+                return 1;
             case USER:
-                return 0;
+                return 1;
             case DEVELOPER:
-                return -1;
+                return 1;
             case SCRUM_MASTER:
-                return -1;
+                return 1;
             case ADMINISTRATOR:
-                return -1;
+                return 0;
             default:
                 return -1;
         }
