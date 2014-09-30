@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package server;
+package server.Roles;
 
 /**
  *
@@ -16,10 +16,13 @@ public interface Role extends Comparable<String>
     public static final String ADMINISTRATOR = "admin";
     public static final String DEVELOPER = "dev";
     public static final String SCRUM_MASTER = "master";
+    public static final String ANONYMOUS = "anon";
     
     boolean canAddUser(String team);
     boolean canRemoveUser(String team);
     boolean canChangeRole(String team, String newRole);
+    boolean canTeamChat(String team);
+    boolean canAllChat();
     @Override
     String toString();
 }
