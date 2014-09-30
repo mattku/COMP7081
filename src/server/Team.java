@@ -14,6 +14,7 @@ public class Team {
 
     public Team(String teamName) {
         this.teamName = teamName;
+        this.teamMembers = new ArrayList<>();
     }
     
     //Attempts to add a user object to teamMembers

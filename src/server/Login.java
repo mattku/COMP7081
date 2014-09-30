@@ -42,15 +42,15 @@ public class Login
                                     Users.getTeam(conn, msg.getUserId()),
                                     sInput, sOutput, server);
                 default:
-                    return new User("Anonymous", "", "", "", sInput, sOutput, server);
+                    return new User("Anonymous", "", "", "default", sInput, sOutput, server);
             }
         } catch (ClassNotFoundException ex)
         {
-            return new User("Anonymous", "", "", "", sInput, sOutput, server);
+            return new User("Anonymous", "", "", "default", sInput, sOutput, server);
         } catch (SQLException ex)
         {
             DB.printSQLException(ex);
-            return new User("Anonymous", "", "", "", sInput, sOutput, server);
+            return new User("Anonymous", "", "", "default", sInput, sOutput, server);
         }
     }
 }

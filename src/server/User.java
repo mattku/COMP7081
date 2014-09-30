@@ -14,24 +14,26 @@ public class User {
     private String userID;
     private String password;
     private Role role;
-    private Team team;
+    private String team;
     private UserThread ut;
 
     /**
      * Constructor userID - unique string identifying each user role - true if
      * user is administrator
      */
-    User(String userID, String passHash, String role, String team, ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
+    User(String userID, String passHash, String role, String teamName, ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
+
         this.userID = userID;
         this.password = passHash;
         this.role = RoleFactory.createRole(role, this);
-        if (server.getTeamList().containsKey(team)) {
-            this.team = server.getTeamList().get(team);
-        } else {
-            this.team = new Team(team);
+        this.team = teamName;
+        if (!server.getTeamList().containsKey(teamName)) {
+            server.addTeam(teamName, new Team(teamName));
         }
-        server.teamBroadcast(this.team, userID + " has connected " + " as " + role);
+        server.getTeamList().get(teamName).addUser(this);
+        
         runUserThread(sInput, sOutput, server);
+        server.teamBroadcast(this.team, this.userID + " has connected " + " as " + role);
     }
 
     private void runUserThread(ObjectInputStream sInput, ObjectOutputStream sOutput, Server server) {
@@ -55,7 +57,7 @@ public class User {
         return role;
     }
 
-    public Team getTeam() {
+    public String getTeam() {
         return team;
     }
 

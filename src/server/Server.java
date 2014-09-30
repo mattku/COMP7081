@@ -42,7 +42,9 @@ public class Server {
         // to display hh:mm:ss
         sdf = new SimpleDateFormat("HH:mm:ss");
         // ArrayList for the Client list
-        userSet = new HashSet<User>();
+        userSet = new HashSet<>();
+        //Hashmap for list of teams
+        teamList = new HashMap<>();
     }
 
     public void start() {
@@ -132,7 +134,7 @@ public class Server {
     }
 
     // Broadcast a message to all clients in the same team
-    public synchronized void teamBroadcast(Team team, String message) {
+    public synchronized void teamBroadcast(String team, String message) {
         String time = sdf.format(new Date());
         String messageLf = time + " " + message + "\n";
 
@@ -142,12 +144,12 @@ public class Server {
             sg.appendRoom(messageLf);
         }
 
-        if (!this.teamList.containsValue(team)) {
-            this.teamList.put(team.getTeamName(), team);
-        }
+//        if (!this.teamList.containsValue(team)) {
+//            this.teamList.put(team.getTeamName(), team);
+//        }
 
         for (User u : teamList.get(
-                team.getTeamName()).getTeamMembers()) {
+                team).getTeamMembers()) {
             if (!u.getUt().writeMsg(messageLf)) {
                 display("Disconnected Client "
                         + u.getUserID()
@@ -197,5 +199,9 @@ public class Server {
 
     public HashMap<String, Team> getTeamList() {
         return teamList;
+    }
+    
+    public void addTeam(String teamName, Team newTeam) {
+        this.teamList.put(teamName, newTeam);
     }
 }
