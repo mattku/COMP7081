@@ -50,6 +50,11 @@ public class User {
         return role;
     }
     
+    public int getRoleEnum()
+    {
+        return role.getEnum();
+    }
+    
     public void setRole(Role r)
     {
         role = r;

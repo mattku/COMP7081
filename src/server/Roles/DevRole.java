@@ -68,4 +68,10 @@ public class DevRole implements Role
                 return -1;
         }
     }
+
+    @Override
+    public int getEnum()
+    {
+        return Role.E_DEV;
+    }
 }

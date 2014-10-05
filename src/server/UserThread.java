@@ -66,10 +66,19 @@ public class UserThread extends Thread {
                 // Switch on the type of message receive
                 switch (cm.getType()) {
                     case ChatMessage.MESSAGE:
-                        if (SlashCommand.process(user, message)) {
-                    break;
-                }
-                        server.broadcast(user.getUserID() + " (" + user.getTeam() + "): " + message);
+                        
+                        int iResult = SlashCommand.process(user, message);
+                        
+                        if (iResult == SlashCommand.E_CONSUMED)
+                            break;
+
+                        if (iResult == SlashCommand.E_IGNORED)
+                            server.broadcast(user.getUserID() + " (" + user.getTeam() + "): " + message);
+                        else
+                            server.teamBroadcast(
+                                    user.getTeam(),
+                                    user.getUserID() + " (" + user.getTeam() + "): " +
+                                    message.substring(iResult));
                         break;
                     case ChatMessage.LOGOUT:
                         server.display(user.getUserID() + " disconnected with a LOGOUT message.");

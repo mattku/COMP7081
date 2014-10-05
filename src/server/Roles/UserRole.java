@@ -68,4 +68,10 @@ public class UserRole implements Role
         }
     }
 
+    @Override
+    public int getEnum()
+    {
+        return Role.E_USER;
+    }
+
 }

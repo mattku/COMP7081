@@ -48,5 +48,11 @@ public class AnonRole implements Role
     {
         return -1;
     }
+
+    @Override
+    public int getEnum()
+    {
+        return Role.E_ANON;
+    }
     
 }

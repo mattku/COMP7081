@@ -82,13 +82,13 @@ public class Client  {
 		{
                     String[] astr = username.trim().split("\\s*:\\s*");
 
-                    if (astr == null || astr.length == 0)
+                    if (astr.length == 0 || astr[0].length() == 0)
                         throw new IOException("Bad username or password");
 
                     if (astr.length >= 2)
-                                sOutput.writeObject(new LoginMessage(astr[0], astr[1]));
+                        sOutput.writeObject(new LoginMessage(astr[0], astr[1]));
                     else
-                                sOutput.writeObject(new LoginMessage(astr[0], ""));
+                        sOutput.writeObject(new LoginMessage(astr[0], ""));
 		}
 		catch (IOException eIO) {
 			display("Exception doing login : " + eIO);
@@ -166,7 +166,7 @@ public class Client  {
 		// default values
 		int portNumber = 1500;
 		String serverAddress = "localhost";
-		String userName = "Anonymous:Any";
+		String userName = "Anonymous";
 
 		// depending of the number of arguments provided we fall through
 		switch(args.length) {

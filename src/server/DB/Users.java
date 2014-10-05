@@ -79,7 +79,9 @@ public final class Users
         {
             stmt.setString(1, role);
             stmt.setString(2, username);
-            stmt.execute();
+
+            if (stmt.executeUpdate() == 0)
+                throw new SQLException();
         }
     }
 
@@ -92,7 +94,8 @@ public final class Users
             stmt.setString(3, role);
             stmt.setString(4, team);
 
-            stmt.execute();
+            if (stmt.executeUpdate() == 0)
+                throw new SQLException();
         }
     }
 
@@ -101,7 +104,9 @@ public final class Users
         try (PreparedStatement stmt = conn.prepareStatement(removeUser))
         {
             stmt.setString(1, username);
-            stmt.execute();
+
+            if (stmt.executeUpdate() == 0)
+                throw new SQLException();
         }
     }
 }

@@ -77,5 +77,10 @@ public class ScrumMasterRole implements Role
         }
     }
 
-    
+    @Override
+    public int getEnum()
+    {
+        return Role.E_MASTER;
+    }
+
 }

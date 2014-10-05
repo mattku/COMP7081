@@ -12,11 +12,19 @@ package server.Roles;
  */
 public interface Role extends Comparable<String>
 {
+    public static final String ANONYMOUS = "anon";
     public static final String USER = "user";
-    public static final String ADMINISTRATOR = "admin";
     public static final String DEVELOPER = "dev";
     public static final String SCRUM_MASTER = "master";
-    public static final String ANONYMOUS = "anon";
+    public static final String ADMINISTRATOR = "admin";
+    
+    public static final int E_ANON      = 0;
+    public static final int E_USER      = 1;
+    public static final int E_DEV       = 2;
+    public static final int E_MASTER    = 3;
+    public static final int E_ADMIN     = 4;
+    
+    public static final String[] AS_ROLENAMES = {ANONYMOUS, USER, DEVELOPER, SCRUM_MASTER, ADMINISTRATOR};
     
     boolean canAddUser(String team);
     boolean canRemoveUser(String team);
@@ -25,4 +33,6 @@ public interface Role extends Comparable<String>
     boolean canAllChat();
     @Override
     String toString();
+    
+    int getEnum();
 }

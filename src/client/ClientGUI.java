@@ -15,22 +15,24 @@ public class ClientGUI extends JFrame implements ActionListener {
 	// will first hold "Username:", later on "Enter message"
 	private JLabel label;
 	// to hold the Username and later on the messages
-	private JTextField tf;
+            JTextField tf;
 	// to hold the server address an the port number
 	private JTextField tfServer, tfPort;
 	// to Logout and get the list of the users
-	private JButton login, logout, whoIsIn;
+	        JButton login, logout, whoIsIn;
 	// for the chat room
 	private JTextArea ta;
 	// if it is for connection
-	private boolean connected;
+            boolean connected;
 	// the Client object
 	private Client client;
 	// the default port number
 	private int defaultPort;
 	private String defaultHost;
 
-	// Constructor connection receiving a socket number
+    private ClientHelperBar m_Helper;
+
+    // Constructor connection receiving a socket number
 	ClientGUI(String host, int port) {
 
 		super("Chat Client");
@@ -38,8 +40,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 		defaultHost = host;
 		
 		// The NorthPanel with:
-		JPanel northPanel = new JPanel(new GridLayout(3,1));
-		// the server name anmd the port number
+		JPanel northPanel = new JPanel(new GridLayout(4,1));
+		// the server name and the port number
 		JPanel serverAndPort = new JPanel(new GridLayout(1,5, 1, 3));
 		// the two JTextField with default value for server address and port number
 		tfServer = new JTextField(host);
@@ -62,6 +64,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 		northPanel.add(tf);
 		add(northPanel, BorderLayout.NORTH);
 
+        m_Helper = new ClientHelperBar(this);
+        northPanel.add(m_Helper);
+        
 		// The CenterPanel which is the chat room
 		ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
 		JPanel centerPanel = new JPanel(new GridLayout(1,1));
@@ -85,11 +90,12 @@ public class ClientGUI extends JFrame implements ActionListener {
 		southPanel.add(whoIsIn);
 		add(southPanel, BorderLayout.SOUTH);
 
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 600);
 		setVisible(true);
 		tf.requestFocus();
-
+        
+        tf.addActionListener(this);
 	}
 
 	// called by the Client to append text in the TextArea 
@@ -112,7 +118,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		tfServer.setEditable(false);
 		tfPort.setEditable(false);
 		// don't react to a <CR> after the username
-		tf.removeActionListener(this);
+//		tf.removeActionListener(this);
 		connected = false;
 	}
 		
@@ -121,27 +127,35 @@ public class ClientGUI extends JFrame implements ActionListener {
 	*/
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		// if it is the Logout button
+
+        // if it is the Logout button
 		if(o == logout) {
 			client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
 			return;
 		}
-		// if it the who is in button
+
+        // if it the who is in button
 		if(o == whoIsIn) {
 			client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));				
 			return;
 		}
 
 		// ok it is coming from the JTextField
-		if(connected) {
-			// just have to send the message
-			client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));				
-			tf.setText("");
-			return;
-		}
-		
+        if(o == tf && connected) {
+            // just have to send the message
+            String sMsg = tf.getText().trim();
 
-		if(o == login) {
+            if (sMsg.length() == 0) return;
+            
+            if (e.getID() >= ActionEvent.ACTION_FIRST && m_Helper.isTeamChatOn())
+                sMsg = "/t " + sMsg;
+                
+            client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, sMsg));
+            tf.setText("");
+            return;
+        }
+		
+		if(o == login || (o == tf && !connected)) {
 			// ok it is a connection request
 			String username = tf.getText().trim();
 			// empty username ignore it
@@ -180,8 +194,6 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// disable the Server and Port JTextField
 			tfServer.setEditable(false);
 			tfPort.setEditable(false);
-			// Action listener for when the user enter a message
-			tf.addActionListener(this);
 		}
 
 	}
@@ -190,5 +202,4 @@ public class ClientGUI extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new ClientGUI("localhost", 1500);
 	}
-
 }
