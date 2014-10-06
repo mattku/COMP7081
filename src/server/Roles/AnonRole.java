@@ -12,7 +12,17 @@ package server.Roles;
  */
 public class AnonRole implements Role
 {
+    @Override
+    public boolean canSetTeam(String username, String newTeam)
+    {
+        return false;
+    }
 
+    @Override
+    public boolean canSetCompany(String username, String newCompany)
+    {
+        return false;
+    }
     @Override
     public boolean canAddUser(String team)
     {

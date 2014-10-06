@@ -12,7 +12,18 @@ package server.Roles;
  */
 public class AdminRole implements Role
 {
+    @Override
+    public boolean canSetTeam(String username, String newTeam)
+    {
+        return true;
+    }
 
+    @Override
+    public boolean canSetCompany(String username, String newCompany)
+    {
+        return true;
+    }
+    
     @Override
     public boolean canAddUser(String team)
     {
@@ -74,4 +85,5 @@ public class AdminRole implements Role
     {
         return Role.E_ADMIN;
     }
+
 }

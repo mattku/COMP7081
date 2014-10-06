@@ -32,16 +32,17 @@ CREATE TABLE `users` (
   `user_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` char(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `team` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+  `team` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `company` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `password`, `role`, `team`) VALUES
-('admin', md5('password'), 'admin', ''),
-('user', md5('password'), 'user', '');
+INSERT INTO `users` (`user_id`, `password`, `role`, `team`, `company`) VALUES
+('admin', md5('password'), 'admin', '', ''),
+('user', md5('password'), 'user', '', '');
 
 --
 -- Indexes for dumped tables

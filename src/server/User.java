@@ -64,6 +64,10 @@ public class User {
         return team;
     }
 
+    public void setTeam(String teamName) {
+        team = teamName;
+    }
+    
     public String getPassword() {
         return password;
     }
@@ -84,5 +88,10 @@ public class User {
     public Server getServer()
     {
         return ut.getServer();
+    }
+
+    public Object getCompany()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

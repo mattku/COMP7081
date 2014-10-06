@@ -150,7 +150,38 @@ public final class SlashCommand
                     }
                 }
                 break;
-
+            case "/setteam":
+                if(l < 3)
+                {
+                    s = "Server> Usage: /setteam name team\n";
+                    break;
+                }
+                try
+                {
+                    SetTeamHandler.handle(pUser, as[1], as[2]);
+                    s = "Server> User \"" + as[1] + "\" set to team \"" + as[2] + "\"\n";
+                }
+                catch (Exception ex)
+                {
+                    s = "Server> Error setting team for user \"" + as[1] + "\"\n";
+                }
+                break;
+            case "/setcompany":
+                if(l < 3)
+                {
+                    s = "Server> Usage: /setcompany name company\n";
+                    break;
+                }
+                try
+                {
+                    SetCompanyHandler.handle(pUser, as[1], as[2]);
+                    s = "Server> User \"" + as[1] + "\" set to company \"" + as[2] + "\"\n";
+                }
+                catch (Exception ex)
+                {
+                    s = "Server> Error setting company for user \"" + as[1] + "\"\n";
+                }
+                break;
             default:
                 s = "Server> Valid commands: /adduser /deluser /setrole /t\n";
         }

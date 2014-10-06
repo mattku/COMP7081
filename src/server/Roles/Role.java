@@ -35,4 +35,8 @@ public interface Role extends Comparable<String>
     String toString();
     
     int getEnum();
+
+    public boolean canSetTeam(String username, String newTeam);
+
+    public boolean canSetCompany(String username, String newCompany);
 }

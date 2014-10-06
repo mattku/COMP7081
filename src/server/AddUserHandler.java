@@ -36,15 +36,15 @@ public class AddUserHandler
     {
         if(team == null)
         {
-            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, "");
+            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, "null", "null");
         }
         else if(company == null)
         {
-            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, team);
+            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, team, "null");
         }
         else
         {
-            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, team + " " + company);
+            Users.addUser(conn, name, Util.mySQLCompatibleMD5(password), role, team, company);
         }
     }
 }

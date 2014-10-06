@@ -241,4 +241,13 @@ public class Server {
     {
         return new HashSet<>(userMap.values());
     }
+
+    public synchronized void removeTeam(Team t)
+    {
+        if(!t.getTeamMembers().isEmpty())
+        {
+            System.out.println("Warning: removing a team with users in it.");
+        }
+        teamMap.remove(t.getTeamName());
+    }
 }
