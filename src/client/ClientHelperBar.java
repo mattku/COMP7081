@@ -25,6 +25,8 @@ public class ClientHelperBar extends JPanel implements ActionListener
     private final ClientAddUserDialog m_dlgAdd;
     private final ClientDelUserDialog m_dlgDel;
     private final ClientSetRoleDialog m_dlgRole;
+    private final ClientSetTeamDialog m_dlgTeam;
+    private final ClientSetCompanyDialog m_dlgCompany;
 
     private final ClientGUI m_pParent;
     
@@ -52,6 +54,8 @@ public class ClientHelperBar extends JPanel implements ActionListener
         m_dlgAdd = new ClientAddUserDialog(pParent, true);
         m_dlgDel = new ClientDelUserDialog(pParent, true);
         m_dlgRole = new ClientSetRoleDialog(pParent, true);
+        m_dlgTeam = new ClientSetTeamDialog(pParent, true);
+        m_dlgCompany = new ClientSetCompanyDialog(pParent, true);
     }
 
     @Override
@@ -68,7 +72,9 @@ public class ClientHelperBar extends JPanel implements ActionListener
         {
             if (o == m_jbAdd) d = m_dlgAdd; else
             if (o == m_jbDel) d = m_dlgDel; else
-            if (o == m_jbRole) d = m_dlgRole;
+            if (o == m_jbRole) d = m_dlgRole; else
+            if (o == m_jbTeam) d = m_dlgTeam; else
+            if (o == m_jbCompany) d = m_dlgCompany;
         }
         
         if (d != null)

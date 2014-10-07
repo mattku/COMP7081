@@ -19,7 +19,7 @@ public final class SlashCommand
     public static final int process(User pUser, String sMsg)
     {
         String[] as;
-        String sNewRole, s = sMsg;
+        String s = sMsg;
         int eRole;
 
         int i, l;
@@ -81,7 +81,7 @@ public final class SlashCommand
                 {
                     try
                     {
-                        sNewRole = as[3].toLowerCase();
+                        String sNewRole = as[3].toLowerCase();
 
                         if (as[2].equals("null")) as[2] = "";
                         
@@ -139,7 +139,7 @@ public final class SlashCommand
                 {
                     try
                     {
-                        sNewRole = as[2].toLowerCase();
+                        String sNewRole = as[2].toLowerCase();
                         SetRoleHandler.handle(pUser, as[1], sNewRole);
 
                         s = "Server> User \"" + as[1] + "\" set to role \"" + sNewRole + "\"\n";
@@ -151,15 +151,17 @@ public final class SlashCommand
                 }
                 break;
             case "/setteam":
-                if(l < 3)
+                if(l < 2)
                 {
                     s = "Server> Usage: /setteam name team\n";
                     break;
                 }
                 try
                 {
-                    SetTeamHandler.handle(pUser, as[1], as[2]);
-                    s = "Server> User \"" + as[1] + "\" set to team \"" + as[2] + "\"\n";
+                    String sNewTeam = (l > 2) ? as[2].toLowerCase() : "";
+                    
+                    SetTeamHandler.handle(pUser, as[1], sNewTeam);
+                    s = "Server> User \"" + as[1] + "\" set to team \"" + sNewTeam + "\"\n";
                 }
                 catch (Exception ex)
                 {
@@ -167,15 +169,17 @@ public final class SlashCommand
                 }
                 break;
             case "/setcompany":
-                if(l < 3)
+                if(l < 2)
                 {
                     s = "Server> Usage: /setcompany name company\n";
                     break;
                 }
                 try
                 {
-                    SetCompanyHandler.handle(pUser, as[1], as[2]);
-                    s = "Server> User \"" + as[1] + "\" set to company \"" + as[2] + "\"\n";
+                    String sNewCompany = (l > 2) ? as[2].toLowerCase() : "";
+
+                    SetCompanyHandler.handle(pUser, as[1], sNewCompany);
+                    s = "Server> User \"" + as[1] + "\" set to company \"" + sNewCompany + "\"\n";
                 }
                 catch (Exception ex)
                 {
@@ -183,7 +187,7 @@ public final class SlashCommand
                 }
                 break;
             default:
-                s = "Server> Valid commands: /adduser /deluser /setrole /t\n";
+                s = "Server> Valid commands: /adduser /deluser /setrole /setteam /setcompany /t\n";
         }
 
         pUser.sendMessage(s);

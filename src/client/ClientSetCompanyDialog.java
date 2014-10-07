@@ -6,25 +6,24 @@
 package client;
 
 import java.awt.event.ActionEvent;
-import server.Roles.Role;
 
 /**
  *
  * @author aequites
  */
-public class ClientSetRoleDialog extends javax.swing.JDialog
+public class ClientSetCompanyDialog extends javax.swing.JDialog
 {
     private ClientGUI m_pParent;
 
     /**
-     * Creates new form ClientSetRoleDialog
+     * Creates new form ClientSetTeamDialog
      */
-    public ClientSetRoleDialog(java.awt.Frame parent, boolean modal)
+    public ClientSetCompanyDialog(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         initComponents();
-
-        m_pParent = (ClientGUI)parent;    
+        
+        m_pParent = (ClientGUI)parent;
     }
 
     /**
@@ -40,12 +39,12 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
         jLabel1 = new javax.swing.JLabel();
         jtxtName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jcboxRoles = new javax.swing.JComboBox();
-        jbSetRole = new javax.swing.JButton();
+        jtxtCompany = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jbCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Change User's Role");
+        setTitle("Change User's Company");
         setAlwaysOnTop(true);
         setModal(true);
         setResizable(false);
@@ -53,20 +52,23 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("User Name:");
 
+        jtxtName.setName(""); // NOI18N
         jtxtName.setPreferredSize(new java.awt.Dimension(100, 19));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("New Role:");
+        jLabel2.setText("New Company:");
+        jLabel2.setToolTipText("");
 
-        jcboxRoles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "User", "Developer", "Scrum Master", "Administrator" }));
+        jtxtCompany.setPreferredSize(new java.awt.Dimension(100, 19));
 
-        jbSetRole.setText("Set Role");
-        jbSetRole.setPreferredSize(new java.awt.Dimension(125, 25));
-        jbSetRole.addActionListener(new java.awt.event.ActionListener()
+        jButton1.setText("Set Company");
+        jButton1.setToolTipText("");
+        jButton1.setPreferredSize(new java.awt.Dimension(125, 25));
+        jButton1.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jbSetRoleActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -85,19 +87,19 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jbSetRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbCancel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jcboxRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtxtCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbCancel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -108,11 +110,11 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
                     .addComponent(jLabel1)
                     .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jcboxRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtCompany, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbCancel)
-                    .addComponent(jbSetRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbCancel))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -125,16 +127,22 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
         this.setVisible(false);
     }//GEN-LAST:event_jbCancelActionPerformed
 
-    private void jbSetRoleActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jbSetRoleActionPerformed
-    {//GEN-HEADEREND:event_jbSetRoleActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
         // TODO add your handling code here:
         String sName = jtxtName.getText().trim().split("\\s+")[0];
         if (sName.length() == 0) return;
         
-        m_pParent.tf.setText("/setrole " + sName + ' ' + Role.AS_ROLENAMES[jcboxRoles.getSelectedIndex() + 1]);
+        String sCompany = jtxtCompany.getText().trim().split("\\s+")[0];
+
+        if (sCompany.length() > 0)
+            m_pParent.tf.setText("/setcompany " + sName + ' ' + sCompany);
+        else
+            m_pParent.tf.setText("/setcompany " + sName);
+        
         m_pParent.actionPerformed(new ActionEvent(m_pParent.tf, ActionEvent.ACTION_FIRST-1, null));
         this.setVisible(false);
-    }//GEN-LAST:event_jbSetRoleActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,20 +167,21 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
         }
         catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(ClientSetRoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientSetCompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(ClientSetRoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientSetCompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(ClientSetRoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientSetCompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(ClientSetRoleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ClientSetCompanyDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
@@ -180,7 +189,7 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
         {
             public void run()
             {
-                ClientSetRoleDialog dialog = new ClientSetRoleDialog(new javax.swing.JFrame(), true);
+                ClientSetCompanyDialog dialog = new ClientSetCompanyDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter()
                 {
                     @Override
@@ -195,11 +204,11 @@ public class ClientSetRoleDialog extends javax.swing.JDialog
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton jbCancel;
-    private javax.swing.JButton jbSetRole;
-    private javax.swing.JComboBox jcboxRoles;
+    private javax.swing.JTextField jtxtCompany;
     private javax.swing.JTextField jtxtName;
     // End of variables declaration//GEN-END:variables
 }
